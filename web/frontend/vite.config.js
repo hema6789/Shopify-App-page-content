@@ -58,6 +58,12 @@ export default defineConfig({
     proxy: {
       "^/(\\?.*)?$": proxyOptions,
       "^/api(/|(\\?.*)?$)": proxyOptions,
+      "/admin/api/2022-10/pages.json": {
+        ws: true,
+        changeOrigin: true,
+        target: "https://testappaccount.myshopify.com"
+      }
     },
+
   },
 });

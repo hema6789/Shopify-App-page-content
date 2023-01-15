@@ -6,12 +6,6 @@
     "build": "vite build",
     "dev": "vite",
     "coverage": "vitest run --coverage"
-  },
-  "proxy":{
-    "/admin/api/*":{
-    "target":"https://testappaccount.myshopify.com",
-    "secure":false
- }
  },
   "type": "module",
   "engines": {
