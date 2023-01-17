@@ -1,3 +1,5 @@
 export { ProductsCard } from "./ProductsCard";
-export { ProductsDetails } from "./ProductsDetails";
+export {PageList} from "./PageList";
+export {PageMetafield} from "./PageMetafield";
+export {PageMeta} from "./PageMeta";
 export * from "./providers";
