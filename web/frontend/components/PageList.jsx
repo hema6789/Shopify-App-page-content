@@ -1,30 +1,32 @@
 import { useState, useEffect } from "react";
-import { Card, Button} from "@shopify/polaris";
-import js2xmlparser from 'js2xmlparser';
-
+import { Card, Button } from "@shopify/polaris";
+import exportFromJSON from 'export-from-json';
 import axios from 'axios';
 
 export function PageList() {
     const [data, setData] = useState([]);
     useEffect(async () => {
-        console.log('ASYNC CALLING.....')
+     //   console.log('ASYNC CALLING.....')
         const response1 = await axios.get('/admin/api/2023-01/pages.json/', {
             headers: {
-                'X-Shopify-Access-Token': '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',
+                'X-Shopify-Access-Token': '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',
                 'Content-Type': 'application/json'
             }
-            
+         
         });
-        console.log(response1.data.pages)
-        console.log(js2xmlparser.parse("data",data));
+      //  console.log(response1.data.pages)
+       
         setData(response1.data.pages);
     }, [])
-
-    console.log(js2xmlparser.parse("pages", obj));
+    let result;
+    const handlePublish = (ddata) => {
+        result = Object.entries(ddata).map(ef => `<${ef[0]}>${ef[1]}</${ef[0]}>`).join('');
+        console.log(result)
+    }
 
     return (
         <>
-        <div>{xml}</div>
+           
             <Card>
                 <table className="table" cellSpacing={10} cellPadding={10}>
                     <thead>
@@ -35,29 +37,29 @@ export function PageList() {
                             <th>Handle</th>
                             <th>metafield</th>
                             <th>Action</th>
-                            
+
                         </tr>
                     </thead>
                     <tbody>
                         {
                             data.map((displayData, index) => {
                                 return (
-                                   
+
                                     <tr key={index} >
                                         <td >{index + 1}</td>
                                         <td>{displayData.id}</td>
                                         <td>{displayData.title}</td>
                                         <td>{displayData.handle}</td>
                                         <td>{displayData.metafield_value}</td>
-                                        <td><Button action="/"> Publish </Button></td>
+                                        <td><Button onClick={()=>handlePublish(displayData) }> Publish </Button></td>
                                     </tr>
-                                    
+
                                 )
                             })
                         }
                     </tbody>
                 </table>
-                
+
             </Card>
         </>
     );
