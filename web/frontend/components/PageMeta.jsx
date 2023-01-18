@@ -1,37 +1,47 @@
 import { useState, useEffect } from "react";
-import { Card } from "@shopify/polaris";
+import { Card, Button } from "@shopify/polaris";
 import axios from 'axios';
 
 export function PageMeta() {
 
     const [data, setData] = useState([]);
-    //const [id, setId] = useState([]);
-    useEffect(() => {
-        axios.get('/admin/api/2023-01/pages.json/', {
-            headers: {
-                'X-Shopify-Access-Token': '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',
-                'Content-Type': 'application/json'
-            }
-        }).then(res => { setData(res.data.pages);  }).catch(err => console.log(err))
-        
-    }, []),
+    const [id, setId] = useState([]);
+    const [meta, setMeta] = useState([]);
 
     useEffect(() => {
-      
+        axios.get('/admin/api/2023-01/pages.json', {
+            headers: {
+                'X-Shopify-Access-Token': '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',
+                'Content-Type': 'application/json'
+            }
+        }).then(res => { setData(res.data.pages); }).catch(err => console.log(err))
+
+    }, [])
+
+    useEffect(() => {
+        localStorage.setItem('pages', JSON.stringify(data))
         data.map(info => {
-            axios.get(`/admin/api/2023-01/pages/${info.id}/metafields.json`, {
-                
+
+            axios.get(`/admin/api/2022-10/metafields.json?metafield[owner_id]=${info.id}&metafield[owner_resource]=page`, {
                 headers: {
-                    'X-Shopify-Access-Token': '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',
-                    'Content-Type': 'application/json'  
+                    'X-Shopify-Access-Token': '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',
+                    'Content-Type': 'application/json'
                 }
-            }).then(res => 
-                console.log(res.data)
-                             
+            }).then(res => {
+                // console.log(res.data.metafields)
+                res.data.metafields.map(et => {
+                    if (et.key == "language") {
+                        setMeta([...meta, et])
+                        console.log(et)
+                    }
+                })
+
+
+            }
             ).catch(err => console.log(err))
         })
+
     }, [data])
-   
     return (
         <>
             <Card>
@@ -40,26 +50,40 @@ export function PageMeta() {
                         <tr>
                             <th>Id</th>
                             <th>MainId</th>
-                            <th>Namespace</th>
-                            <th>Key</th>
-                            <th>Value</th>
+                            <th>Title</th>
+                            <th>Handle</th>
+                            <th>Metafield</th>
+                            <th>Action</th>
 
                         </tr>
                     </thead>
+
+
+
+
+
+
+
                     <tbody>
                         {
                             data.map((metaData, index) => {
                                 return (
-                                    <tr key={index}>
-                                        <td>{index + 1}</td>
-                                        <td>{metaData.id}</td>
-                                        <td>{metaData.namespace}</td>
-                                        <td>{metaData.key}</td>
-                                        <td>{metaData.value}</td>
-                                        
-                                    </tr>
+                                    <>  {meta.map(mt =>
+                                        <> {(mt.owner_id == metaData.id) ?
+                                            <tr key={index}>
+                                                <td>{index + 1}</td>
+                                                <td>{metaData.id}</td>
+                                                <td>{metaData.title}</td>
+                                                <td>{metaData.handle}</td>
+                                                <td>{mt.value}</td>
+                                                <td>{mt.owner_id}</td>
+                                                <td><Button>Publish</Button></td>
+
+                                            </tr> : ""}</>)
+                                    }</>
                                 )
                             })
+
                         }
                     </tbody>
                 </table>
