@@ -11,7 +11,7 @@ export function PageMeta() {
     useEffect(() => {
         axios.get('/admin/api/2023-01/pages.json/', {
             headers: {
-                'X-Shopify-Access-Token': 'XXXX',
+                'X-Shopify-Access-Token': 'xxx',
                 'Content-Type': 'application/json'
             }
         }).then(res => { setData(res.data.pages); }).catch(err => console.log(err))
@@ -29,7 +29,7 @@ export function PageMeta() {
                     response = await axios.get(`/admin/api/2023-01/metafields.json?metafield[owner_id]=${info.id}&metafield[owner_resource]=page`, {
 
                         headers: {
-                            'X-Shopify-Access-Token': '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',
+                            'X-Shopify-Access-Token': 'xxxx',
                             'Content-Type': 'application/json'
                         }
 
@@ -82,20 +82,25 @@ export function PageMeta() {
                         </tr>
                     </thead>
                     <tbody>
-                        {
-                            meta.map((metaData, index) => {
+                    {
+                            data.map((metaData, index) => {
                                 return (
-                                    <tr key={index}>
-                                        <td>{index + 1}</td>
-                                        <td>{metaData.id}</td>
-                                        <td>{metaData.owner_id}</td>
-                                        <td>{metaData.key}</td>
-                                        <td>{metaData.value}</td>
-                                        <td><Button action="/"> Publish </Button></td>
+                                    <>  {meta.map(mt =>
+                                        <> {(mt.owner_id == metaData.id) ?  
+                                            <tr key={index}>
+                                                <td>{index + 1}</td>
+                                                <td>{metaData.id}</td>
+                                                <td>{metaData.title}</td>
+                                                <td>{metaData.handle}</td>
+                                                <td>{mt.value}</td>
+                                             
+                                                <td><Button>Publish</Button></td>
 
-                                    </tr>
+                                            </tr> : ""}</>)
+                                    }</>
                                 )
                             })
+
                         }
                     </tbody>
                 </table>
