@@ -24,7 +24,7 @@ export function PageMeta() {
 
             axios.get(`/admin/api/2022-10/metafields.json?metafield[owner_id]=${info.id}&metafield[owner_resource]=page`, {
                 headers: {
-                    'X-Shopify-Access-Token': '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',
+                    'X-Shopify-Access-Token': '',
                     'Content-Type': 'application/json'
                 }
             }).then(res => {
