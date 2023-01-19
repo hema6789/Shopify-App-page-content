@@ -11,7 +11,7 @@ export function PageMeta() {
     useEffect(() => {
         axios.get('/admin/api/2023-01/pages.json', {
             headers: {
-                'X-Shopify-Access-Token': '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',
+                'X-Shopify-Access-Token': '',
                 'Content-Type': 'application/json'
             }
         }).then(res => { setData(res.data.pages); }).catch(err => console.log(err))
