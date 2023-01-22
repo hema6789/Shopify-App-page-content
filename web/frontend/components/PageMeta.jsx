@@ -4,10 +4,12 @@ import axios from 'axios';
 
 export function PageMeta() {
 
+
     const [data, setData] = useState([]);
     //const [id, setId] = useState([]);
     const [meta, setMeta] = useState([]);
     const [testArr, setTestArr] = useState([]);
+
     useEffect(() => {
         axios.get('/admin/api/2023-01/pages.json/', {
             headers: {
@@ -29,7 +31,7 @@ export function PageMeta() {
                     response = await axios.get(`/admin/api/2023-01/metafields.json?metafield[owner_id]=${info.id}&metafield[owner_resource]=page`, {
 
                         headers: {
-                            'X-Shopify-Access-Token': 'xxxx',
+                            'X-Shopify-Access-Token': 'xxx',
                             'Content-Type': 'application/json'
                         }
 
@@ -41,10 +43,13 @@ export function PageMeta() {
                 // Anything else you want to do with the response...
 
                 let arrObj = response.data.metafields;
-                console.log("arra", arrObj);
-
-                const found = arrObj.find(x => (x.namespace == "custom" && x.key=="language"));
-                console.log("dd", found);
+                const found = arrObj.find(x => (x.namespace == "custom" && x.key == "language"));
+                if (typeof found === "undefined") {
+                    setTestArr([...testArr,info]);
+                    console.log("msg", info);
+                    return <div>{info.id}</div>;
+                }
+                
                 // for (let x in arrObj) {
                 //     console.log("test", x);
                 //     // setTestArr([...testArr,x]);
@@ -55,6 +60,8 @@ export function PageMeta() {
                 // All the resolved promises returned from the map function.
                 console.log("dd", results);
                 // console.log("async wait ", results.data.metafields[0]);
+                
+                console.log("empty", testArr);
                 setMeta(results);
                 // setTestArr([...testArr, pagedetails.data.metafields[0]]);
 
@@ -64,11 +71,13 @@ export function PageMeta() {
             // fetchMyAPI();
         }, [data])
 
+
+
     return (
         <>
             <Card>
 
-
+               <p id="myDiv"><h2> page missing : </h2></p>
                 <table className="table" cellPadding={10} cellSpacing={10}>
                     <thead>
                         <tr>
@@ -82,26 +91,30 @@ export function PageMeta() {
                         </tr>
                     </thead>
                     <tbody>
-                    {
-                            data.map((metaData, index) => {
+                        {
+                         
+                          data.map((metaData, index) => {
+                            {console.log("nullpage", testArr)}
                                 return (
                                     <>  {meta.map(mt =>
-                                        <> {(mt.owner_id == metaData.id) ?  
+                                        <> {(typeof mt !== "undefined")
+                                            && (mt.owner_id == metaData.id) ?
                                             <tr key={index}>
                                                 <td>{index + 1}</td>
                                                 <td>{metaData.id}</td>
                                                 <td>{metaData.title}</td>
                                                 <td>{metaData.handle}</td>
                                                 <td>{mt.value}</td>
-                                             
                                                 <td><Button>Publish</Button></td>
+                                            </tr> : "" }
+                                            </>)
 
-                                            </tr> : ""}</>)
                                     }</>
+
                                 )
                             })
-
                         }
+
                     </tbody>
                 </table>
 
@@ -110,4 +123,6 @@ export function PageMeta() {
             </Card>
         </>
     );
+
+
 }
