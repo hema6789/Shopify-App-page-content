@@ -1,43 +1,58 @@
 import { useState, useEffect } from "react";
 export function StoreName() {
 
-const [id, setId] = useState('');
-const [name, setName] = useState('');
+  const [id, setId] = useState('');
+  const [name, setName] = useState('');
 
-useEffect(() => {
+  useEffect(() => {
     fetch('/admin/api/2023-01/shop.json', {
       headers: {
         'Content-Type': 'application/json',
-        'X-Shopify-Access-Token': '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'
-    }
+        'X-Shopify-Access-Token': 'xxx'
+      }
     })
-        .then(res => res.json())
-        .then(data => {
-            setId(data.id);
-            setName(data.name);
-            saveXMLFile();
-            console.log(data)
-        })
-        .catch(error => console.log(error))
-}, []);
+      .then(res => res.json())
+      .then(data => {
 
-const saveXMLFile = () => {
+
+        setId(data.shop.id);
+        setName(data.shop.name);
+        console.log("store", data);
+        console.log("id", id, "name", name);
+        saveXMLFile();
+
+      })
+      .catch(error => console.log(error))
+  }, []);
+
+  const saveXMLFile = () => {
+
     const serializer = new XMLSerializer();
-    const xmlData = serializer.serializeToString({ id, name });
+    console.log("id", id, "name", name);
+    let obj = {
+      id: id,
+      name: name,
+    };
+    // const xmlData = serializer.serializeToString(obj);
 
-    fetch('../assets', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/xml' },
-        body: xmlData
+    fetch('../assets/shop.xml', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/xml'},
+      body: obj
     })
-    .then(res => res.json())
-    .then(data => {
+      .then(res => res.json())
+      .then(data => {
         if (data.status === 'success') {
-            console.log('XML file saved successfully');
+          console.log('XML file saved successfully');
         } else {
-            console.log('Error saving XML file');
+          console.log('Error saving XML file');
         }
-    })
-    .catch(error => console.log(error));
-}
+      })
+      .catch(error => console.log(error));
+  }
+  return (
+    <div> test </div>
+
+  );
+
 }
