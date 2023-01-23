@@ -6,7 +6,7 @@ const shopifyApi = '/admin/api/2023-01/shop.json';
 axios.get(shopifyApi, {
     headers: {
         'Content-Type': 'application/json',
-        'X-Shopify-Access-Token': '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'
+        'X-Shopify-Access-Token': 'xxx'
     }
 })
     .then(response => {
