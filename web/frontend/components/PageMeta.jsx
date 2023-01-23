@@ -45,9 +45,13 @@ export function PageMeta() {
                 let arrObj = response.data.metafields;
                 const found = arrObj.find(x => (x.namespace == "custom" && x.key == "language"));
                 if (typeof found === "undefined") {
-                    setTestArr([...testArr,info]);
-                    console.log("msg", info);
-                    return <div>{info.id}</div>;
+                    let obj={};
+                    obj.owner_id=info.id;
+                    obj.key="language";
+                    obj.value="English"
+                    // setTestArr([...testArr,info]);
+                    
+                    return obj;
                 }
                 
                 // for (let x in arrObj) {
@@ -77,7 +81,7 @@ export function PageMeta() {
         <>
             <Card>
 
-               <p id="myDiv"><h2> page missing : </h2></p>
+               
                 <table className="table" cellPadding={10} cellSpacing={10}>
                     <thead>
                         <tr>
@@ -94,7 +98,7 @@ export function PageMeta() {
                         {
                          
                           data.map((metaData, index) => {
-                            {console.log("nullpage", testArr)}
+                            
                                 return (
                                     <>  {meta.map(mt =>
                                         <> {(typeof mt !== "undefined")
