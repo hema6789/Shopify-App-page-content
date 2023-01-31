@@ -85,7 +85,7 @@ export function StoreName() {
     // console.log("dfdf",xml);
   }
   return (
-    <div> test </div>
+    <div>  </div>
 
   );
 
