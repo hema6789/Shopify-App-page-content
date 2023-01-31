@@ -51,8 +51,8 @@ export const s3buckets = async (obj) => {
     const s3Client = new S3Client({
       region: REGION,
       credentials: {
-        accessKeyId: 'AKIA2LNDD6PGMREIQW7F',
-        secretAccessKey: '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'
+        accessKeyId: 'xxx',
+        secretAccessKey: 'xxx'
       }
     });
     const putCommand = new PutObjectCommand({
@@ -144,8 +144,8 @@ app.post("/api/PageCreate", async (_req, res) => {
     // you can search page language and search in aws file and get shopname and access token.
 
     const s3 = new AWS.S3({
-      accessKeyId: 'AKIA2LNDD6PGMREIQW7F',
-      secretAccessKey: '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'
+      accessKeyId: 'xxx',
+      secretAccessKey: 'xxx'
     });
 
     const bucketName = 'appleexamplebucket';
