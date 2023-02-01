@@ -29,7 +29,7 @@ export function StoreName() {
     // fetch('/admin/api/2023-01/shop.json', {
     //   headers: {
     //     'Content-Type': 'application/json',
-    //     'X-Shopify-Access-Token': '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'
+    //     'X-Shopify-Access-Token': 'xxxx'
     //   }
     // })
     //   .then(res => res.json())
